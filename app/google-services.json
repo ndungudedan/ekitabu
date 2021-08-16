@@ -1,0 +1,175 @@
+{
+  "project_info": {
+    "project_number": "980066212126",
+    "firebase_url": "https://digitalreceipts2.firebaseio.com",
+    "project_id": "digitalreceipts2",
+    "storage_bucket": "digitalreceipts2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:980066212126:android:34d96c6f692713a5",
+        "android_client_info": {
+          "package_name": "com.Tidtech.Apartments"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "980066212126-ls4amrr7r8daj8lu6rl6aqbj317bk5k4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAedbEQCuCJg4p24IoVPsQdwS5DdJEulg8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "980066212126-ls4amrr7r8daj8lu6rl6aqbj317bk5k4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:980066212126:android:c579d1624b31b59cc3110f",
+        "android_client_info": {
+          "package_name": "com.dedan.ekitabu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "980066212126-ls4amrr7r8daj8lu6rl6aqbj317bk5k4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAedbEQCuCJg4p24IoVPsQdwS5DdJEulg8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "980066212126-ls4amrr7r8daj8lu6rl6aqbj317bk5k4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:980066212126:android:7a4eff47471c3532c3110f",
+        "android_client_info": {
+          "package_name": "com.dedan.episode"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "980066212126-ahdplacqdlh4pejahu6svj1jsv9omjro.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dedan.episode",
+            "certificate_hash": "e0275d53e05bc64cad104758f8f2e030c395415f"
+          }
+        },
+        {
+          "client_id": "980066212126-eqsq838fassvcb3figllcmp6637b4a9n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dedan.episode",
+            "certificate_hash": "a2fb88d50ddddbbe8350e4ff77a3acc19c44222d"
+          }
+        },
+        {
+          "client_id": "980066212126-hb5ejqbiu7ujsl0lpt6huk4ainq9ro2g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dedan.episode",
+            "certificate_hash": "7191cfcb5c9fd1e568ebbc5e5467476e472f604f"
+          }
+        },
+        {
+          "client_id": "980066212126-l1se8usp3vt3quhkpi8bfncg6o8kmn62.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dedan.episode",
+            "certificate_hash": "1dcc447d8bedbe1584789c89d702d180f4ae1afa"
+          }
+        },
+        {
+          "client_id": "980066212126-q27753omhuqbcrqh3csefbqv5ki691eg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dedan.episode",
+            "certificate_hash": "4fea2a624c6365eb7efb62c7fb4ae5531049cf76"
+          }
+        },
+        {
+          "client_id": "980066212126-ls4amrr7r8daj8lu6rl6aqbj317bk5k4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAedbEQCuCJg4p24IoVPsQdwS5DdJEulg8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "980066212126-ls4amrr7r8daj8lu6rl6aqbj317bk5k4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:980066212126:android:eb3534362a1fad2a",
+        "android_client_info": {
+          "package_name": "com.example.dedan.digitalreceipts"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "980066212126-126b9asi40fhrr81b7pq02c5lntfvteq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dedan.digitalreceipts",
+            "certificate_hash": "cf19c85200080561f2947a24ebc7975b261b6f92"
+          }
+        },
+        {
+          "client_id": "980066212126-ls4amrr7r8daj8lu6rl6aqbj317bk5k4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAedbEQCuCJg4p24IoVPsQdwS5DdJEulg8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "980066212126-ls4amrr7r8daj8lu6rl6aqbj317bk5k4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
