@@ -15,11 +15,48 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
+
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.*
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.AbsoluteAlignment
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 
 import com.dedan.ekitabu.R
+import com.dedan.ekitabu.ui.index.MainScreen
+import com.dedan.ekitabu.ui.register.RegisterPage
+import com.dedan.ekitabu.utils.Screen
+import com.learnandroid.loginapplication.ui.theme.primaryColor
+import com.learnandroid.loginapplication.ui.theme.whiteBackground
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -30,80 +67,24 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_login)
+        //setContentView(R.layout.activity_login)
         setContent {
-            Text("Hello world!")
+            EkitabuApplication()
         }
 
-        val username = findViewById<EditText>(R.id.username)
-        val password = findViewById<EditText>(R.id.password)
-        val login = findViewById<Button>(R.id.login)
-        val loading = findViewById<ProgressBar>(R.id.loading)
 
         loginViewModel = ViewModelProvider(this)
-                .get(LoginViewModel::class.java)
+            .get(LoginViewModel::class.java)
 
         loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
             val loginState = it ?: return@Observer
 
-            // disable login button unless both username / password is valid
-            login.isEnabled = loginState.isDataValid
-
-            if (loginState.usernameError != null) {
-                username.error = getString(loginState.usernameError)
-            }
-            if (loginState.passwordError != null) {
-                password.error = getString(loginState.passwordError)
-            }
         })
 
         loginViewModel.loginResult.observe(this@LoginActivity, Observer {
             val loginResult = it ?: return@Observer
 
-            loading.visibility = View.GONE
-            if (loginResult.error != null) {
-                showLoginFailed(loginResult.error)
-            }
-            if (loginResult.success != null) {
-                updateUiWithUser(loginResult.success)
-            }
-            setResult(Activity.RESULT_OK)
-
-            //Complete and destroy login activity once successful
-            finish()
         })
-
-        username.afterTextChanged {
-            loginViewModel.loginDataChanged(
-                    username.text.toString(),
-                    password.text.toString()
-            )
-        }
-
-        password.apply {
-            afterTextChanged {
-                loginViewModel.loginDataChanged(
-                        username.text.toString(),
-                        password.text.toString()
-                )
-            }
-
-            setOnEditorActionListener { _, actionId, _ ->
-                when (actionId) {
-                    EditorInfo.IME_ACTION_DONE ->
-                        loginViewModel.login(
-                                username.text.toString(),
-                                password.text.toString()
-                        )
-                }
-                false
-            }
-
-            login.setOnClickListener {
-                loading.visibility = View.VISIBLE
-                loginViewModel.login(username.text.toString(), password.text.toString())
-            }
-        }
     }
 
     private fun updateUiWithUser(model: LoggedInUserView) {
@@ -111,9 +92,9 @@ class LoginActivity : AppCompatActivity() {
         val displayName = model.displayName
         // TODO : initiate successful logged in experience
         Toast.makeText(
-                applicationContext,
-                "$welcome $displayName",
-                Toast.LENGTH_LONG
+            applicationContext,
+            "$welcome $displayName",
+            Toast.LENGTH_LONG
         ).show()
     }
 
@@ -122,30 +103,251 @@ class LoginActivity : AppCompatActivity() {
     }
 }
 
-/**
- * Extension function to simplify setting an afterTextChanged action to EditText components.
- */
-fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
-    this.addTextChangedListener(object : TextWatcher {
-        override fun afterTextChanged(editable: Editable?) {
-            afterTextChanged.invoke(editable.toString())
-        }
-
-        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-
-        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-    })
-}
-
 
 
 @Composable
-fun MessageCard(name: String) {
-    Text(text = "Hello $name!")
+fun LoginPage(navController: NavController) {
+
+    val image = painterResource(id = R.drawable.login_image)
+
+    val emailValue = remember { mutableStateOf("") }
+    val passwordValue = remember { mutableStateOf("") }
+
+    val passwordVisibility = remember { mutableStateOf(false) }
+    val focusRequester = remember { FocusRequester() }
+
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.White), contentAlignment = Alignment.TopCenter
+        ) {
+
+            Image(image,null)
+        }
+
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(0.60f)
+                .clip(RoundedCornerShape(30.dp))
+                .background(whiteBackground)
+                .padding(10.dp)
+                .verticalScroll(rememberScrollState())
+        ) {
+
+                Text(
+                    text = "Sign In",
+                    style = TextStyle(
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = 2.sp
+                    ),
+                    fontSize = 30.sp
+                )
+                Spacer(modifier = Modifier.padding(20.dp))
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+
+                    OutlinedTextField(
+                        value = emailValue.value,
+                        onValueChange = { emailValue.value = it },
+                        label = { Text("Email Address") },
+                        placeholder = { Text("Email Address") },
+                        singleLine = true,
+                        modifier = Modifier.fillMaxWidth(0.8f),
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                        keyboardActions = KeyboardActions(
+                            onNext = { focusRequester.requestFocus() }
+                        )
+                    )
+
+                    OutlinedTextField(
+                        value = passwordValue.value,
+                        onValueChange = { passwordValue.value = it },
+                        trailingIcon = {
+                            IconButton(onClick = {
+                                passwordVisibility.value = !passwordVisibility.value
+                            }) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.password_eye),
+                                    contentDescription = null,
+                                    tint = if (passwordVisibility.value) primaryColor else Color.Gray
+                                )
+                            }
+                        },
+                        label = { Text("Password") },
+                        placeholder = { Text(text = "Password") },
+                        singleLine = true,
+                        visualTransformation = if (passwordVisibility.value) VisualTransformation.None
+                        else PasswordVisualTransformation(),
+                        modifier = Modifier
+                            .fillMaxWidth(0.8f)
+                            .focusRequester(focusRequester = focusRequester),
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                        keyboardActions = KeyboardActions(
+                            onNext = { focusRequester.requestFocus() }
+                        )
+
+                    )
+
+                    Spacer(modifier = Modifier.padding(10.dp))
+                    Button(
+                        onClick = {
+                                  navController.navigate("index_page"){
+                                      popUpTo("login_page")
+                                      launchSingleTop = true
+                                  }
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth(0.8f)
+                            .height(50.dp)
+                    ) {
+                        Text(text = "Sign In", fontSize = 20.sp)
+                    }
+
+                    Spacer(modifier = Modifier.padding(20.dp))
+                    Text(
+                        text = "Create An Account",
+                        modifier = Modifier.clickable(onClick = {
+                            navController.navigate("register_page"){
+                                popUpTo("login_page")
+                                launchSingleTop = true
+                            }
+                        })
+                    )
+                    Spacer(modifier = Modifier.padding(20.dp))
+                }
+
+
+
+        }
+
+    }
 }
 
 @Preview
 @Composable
-fun PreviewMessageCard() {
-    MessageCard("Android")
+fun previewLoginPage() {
+
+    val image = painterResource(id = R.drawable.login_image)
+
+    val emailValue = remember { mutableStateOf("") }
+    val passwordValue = remember { mutableStateOf("") }
+
+    val passwordVisibility = remember { mutableStateOf(false) }
+    val focusRequester = remember { FocusRequester() }
+
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.White), contentAlignment = Alignment.TopCenter
+        ) {
+
+            Image(image,null)
+        }
+
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(0.60f)
+                .clip(
+                    RoundedCornerShape(30.dp)
+                )
+                .background(whiteBackground)
+                .padding(10.dp)
+                .verticalScroll(rememberScrollState())
+        ) {
+
+                Text(
+                    text = "Sign In",
+                    style = TextStyle(
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = 2.sp
+                    ),
+                    fontSize = 30.sp
+                )
+
+                Spacer(modifier = Modifier.padding(20.dp))
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    OutlinedTextField(
+                        value = emailValue.value,
+                        onValueChange = { emailValue.value = it },
+                        label = { Text("Email Address") },
+                        placeholder = { Text("Email Address") },
+                        singleLine = true,
+                        //modifier = Modifier.fillMaxWidth(0.8f),
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                        keyboardActions = KeyboardActions(
+                            onNext = { focusRequester.requestFocus() }
+                        )
+                    )
+
+                    OutlinedTextField(
+                        value = passwordValue.value,
+                        onValueChange = { passwordValue.value = it },
+                        trailingIcon = {
+                            IconButton(onClick = {
+                                passwordVisibility.value = !passwordVisibility.value
+                            }) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.password_eye),
+                                    contentDescription=null,
+                                    tint = if (passwordVisibility.value) primaryColor else Color.Gray
+                                )
+                            }
+                        },
+                        label = { Text("Password") },
+                        placeholder = { Text(text = "Password") },
+                        singleLine = true,
+                        visualTransformation = if (passwordVisibility.value) VisualTransformation.None
+                        else PasswordVisualTransformation(),
+                        modifier = Modifier
+                            .fillMaxWidth(0.8f)
+                            .focusRequester(focusRequester = focusRequester),
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                        keyboardActions = KeyboardActions(
+                            onNext = { focusRequester.requestFocus() }
+                        )
+
+                    )
+
+                    Spacer(modifier = Modifier.padding(10.dp))
+                    Button(
+                        onClick = {},
+                        modifier = Modifier
+                            .fillMaxWidth(0.8f)
+                            .height(50.dp)
+                    ) {
+                        Text(text = "Sign In", fontSize = 20.sp)
+                    }
+
+                    Spacer(modifier = Modifier.padding(20.dp))
+                    Text(
+                        text = "Create An Account",
+                        modifier = Modifier.clickable(onClick = {
+
+                        })
+                    )
+                    Spacer(modifier = Modifier.padding(20.dp))
+                }
+
+        }
+
+    }
+}
+
+
+@Composable
+fun EkitabuApplication(){
+    val navController = rememberNavController()
+
+    NavHost(navController = navController, startDestination = Screen.Login.route, builder = {
+        composable(Screen.Login.route, content = { LoginPage(navController = navController) })
+        composable(Screen.Register.route, content = { RegisterPage(navController = navController) })
+        composable(Screen.Index.route, content = { MainScreen() })
+    })
 }

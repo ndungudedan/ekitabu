@@ -9,4 +9,17 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+
+    <string name="home_screen">Home</string>
+    <string name="category_screen">Category</string>
+    <string name="authors_screen">Authors</string>
+    <string name="profile_screen">Profile</string>
+    <string name="login_screen">Login</string>
+    <string name="register_screen">Register</string>
+    <string name="index_screen">Index</string>
+
+    <string name="title_activity_index">IndexActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>
